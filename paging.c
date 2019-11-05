@@ -7,17 +7,19 @@
 #include <fcntl.h>
 #include <unistd.h>
 
+/* Functions */
 void wr_mem(int location, int value);
 int rd_mem(int Location);
 int PageFileFind(int location);
 void PageFileWrite(int location, int value);
 int LRU();
 
-
+/* Memory */
 int pageFile; //disk
 int memory[5]; //RAM
 int pagetable[8]; //virtual memory
 
+/* Memory Helpers */
 int whichMem[8]; // which memory location
 int time[5];
 
@@ -40,6 +42,7 @@ int main()
   };
 
   /* cause some more paging */
+  printf("mem4: %d\n", rd_mem(4));
   wr_mem(4, rd_mem(2) + rd_mem(4) ); /* mem[4] = mem[2] + mem[4] */
   wr_mem(6, rd_mem(2) + rd_mem(7) ); /* mem[6] = mem[2] + mem[7] */
   wr_mem(1, rd_mem(1) + rd_mem(3) ); /* mem[1] = mem[1] + mem[3] */
@@ -71,6 +74,9 @@ void wr_mem(int location, int value){
   for(int i=0; i<8; i++){
       if(pagetable[i] == bit){
         location_table = i;
+      }
+      else {
+        location_table = location;
       }
   }
   PageFileWrite(location_table,temp_value); 
